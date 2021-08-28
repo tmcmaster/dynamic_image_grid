@@ -1,0 +1,40 @@
+# When code is pushed into the master branch,
+# and the Test workflow was successful,
+# build the web version of the Flutter application,
+# and deploy it into the gh-pages branch,
+# which will then be deployed by GitHub Pages,
+# to https://tmcmaster.github.io/responsive_card
+
+name: Build & Deploy Web
+
+on:
+  workflow_run:
+    workflows: [ "Test" ] # Dependent workflow
+    types: [ completed ] # Only after dependent workflow is done
+    branches: [ main ] # Only do it on main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Should only deploy if the dependent workflow is successful
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: stable
+
+      - run: flutter pub get
+      - run: flutter build web -t site/main.dart
+      - run: sed -i 's/base href="\/"/base href="\/flutter_package_template\/"/g' build/web/index.html
+
+      - name: deploy to pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: build/web  # The folder the action should deploy.
