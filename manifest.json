@@ -1,6 +1,6 @@
 {
-    "name": "flutter_package_template",
-    "short_name": "flutter_package_template",
+    "name": "dynamic_image_grid",
+    "short_name": "dynamic_image_grid",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
