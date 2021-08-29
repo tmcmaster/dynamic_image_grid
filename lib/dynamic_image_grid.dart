@@ -4,32 +4,32 @@ import 'package:dynamic_image_grid/dynamic_item.dart';
 import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-/// TODO: need to introduce grid units, and grid units in x and y.
-/// WIP:
-/// final rowHeight = 0.48;
-/// final rowGap = 0.04;
-///
-/// final row1 = 0;
-/// final row2 = 0.52;
-/// final colGap = 0.04;
-///
 class DynamicImageGrid extends StatefulWidget {
   final List<DynamicItem> children;
+  final rows;
+  final columns;
   DynamicImageGrid({
     required Key key,
     required this.children,
+    this.rows = 2,
+    this.columns = 4,
   }) : super(key: key);
 
   @override
   _DynamicImageGridState createState() => _DynamicImageGridState();
 }
 
-class _DynamicImageGridState extends State<DynamicImageGrid> {
+/// TODO: AnimatedSize needs some further work.
+class _DynamicImageGridState extends State<DynamicImageGrid> with TickerProviderStateMixin {
   bool _makeVisible = false;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
+      final gap = (constraints.maxWidth + constraints.maxHeight) * 0.01;
+      final rowSize = (constraints.maxHeight - (widget.rows - 1) * gap) / widget.rows;
+      final colSize = (constraints.maxWidth - (widget.columns - 1) * gap) / widget.columns;
+
       return Container(
         padding: EdgeInsets.all(10),
         child: VisibilityDetector(
@@ -37,23 +37,34 @@ class _DynamicImageGridState extends State<DynamicImageGrid> {
           onVisibilityChanged: _handleVisibilityChange,
           child: Stack(
             children: widget.children.map((child) {
-              final left = (_makeVisible ? child.end.x : child.start.x) * constraints.maxWidth;
-              final right = (_makeVisible ? child.end.y.toDouble() : child.start.y) * constraints.maxHeight;
-              final width = child.size.width * constraints.maxWidth;
-              final height = child.size.height * constraints.maxHeight;
+              final x = _makeVisible ? child.end.x : child.start.x;
+              final y = _makeVisible ? child.end.y : child.start.y;
+              final h = child.size.height;
+              final w = child.size.width;
+
+              final left = (x - 1) * colSize + (x - 1) * gap;
+              final top = (y - 1) * rowSize + (y - 1) * gap;
+              final width = w * colSize + (w - 1) * gap;
+              final height = h * rowSize + (h - 1) * gap;
+
               final moveDuration = child.duration.inMilliseconds;
               final opacityDuration = child.duration.inMilliseconds ~/ 2;
+
               return AnimatedPositioned(
                 left: left,
-                top: right,
+                top: top,
                 duration: Duration(milliseconds: moveDuration),
                 child: AnimatedOpacity(
                   opacity: _makeVisible ? 1 : 0,
                   duration: Duration(milliseconds: opacityDuration),
-                  child: SizedBox(
-                    width: width,
-                    height: height,
-                    child: child.child,
+                  child: AnimatedSize(
+                    duration: Duration(seconds: 3),
+                    vsync: this,
+                    child: SizedBox(
+                      width: width,
+                      height: height,
+                      child: child.child,
+                    ),
                   ),
                 ),
               );
@@ -75,7 +86,5 @@ class _DynamicImageGridState extends State<DynamicImageGrid> {
         _makeVisible = true;
       });
     }
-
-    //print('Widget ${visibilityInfo.key} is ${visiblePercentage}% visible. Make visible: $_makeVisible');
   }
 }

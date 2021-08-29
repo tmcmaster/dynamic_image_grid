@@ -22,9 +22,9 @@ final widgetBuilder = (id) => DynamicImageGrid(
       children: [
         DynamicItem(
           // strawberries
-          start: Point(0.52, 1),
-          end: Point(0.52, 0.0),
-          size: Size(0.22, 1.0),
+          start: Point(3, 3),
+          end: Point(3, 1),
+          size: Size(1, 2),
           duration: Duration(seconds: 2),
           child: Image.network(
             'https://images.unsplash.com/photo-1574856344991-aaa31b6f4ce3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=975&q=80',
@@ -33,9 +33,9 @@ final widgetBuilder = (id) => DynamicImageGrid(
         ),
         DynamicItem(
           // oranges
-          start: Point(0.52, 0),
-          end: Point(0.78, 0),
-          size: Size(0.22, 0.48),
+          start: Point(3, 1),
+          end: Point(4, 1),
+          size: Size(1, 1),
           duration: Duration(seconds: 1),
           child: Image.network(
             'https://images.unsplash.com/photo-1582979512210-99b6a53386f9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGZydWl0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
@@ -44,9 +44,9 @@ final widgetBuilder = (id) => DynamicImageGrid(
         ),
         DynamicItem(
           // rock mellon
-          start: Point(0.78, 1),
-          end: Point(0.78, 0.52),
-          size: Size(0.22, 0.48),
+          start: Point(4, 3),
+          end: Point(4, 2),
+          size: Size(1, 1),
           duration: Duration(seconds: 2),
           child: Image.network(
             'https://images.unsplash.com/photo-1571575173700-afb9492e6a50?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjN8fGZydWl0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
@@ -55,9 +55,9 @@ final widgetBuilder = (id) => DynamicImageGrid(
         ),
         DynamicItem(
           // blueberries
-          start: Point(0, -0.5),
-          end: Point(0, 0),
-          size: Size(0.48, 0.48),
+          start: Point(1, -1),
+          end: Point(1, 1),
+          size: Size(2, 1),
           duration: Duration(seconds: 3),
           child: Image.network(
             'https://images.unsplash.com/photo-1457296898342-cdd24585d095?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fGZydWl0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
@@ -66,9 +66,9 @@ final widgetBuilder = (id) => DynamicImageGrid(
         ),
         DynamicItem(
           // raspberries
-          start: Point(0, 1),
-          end: Point(0, 0.52),
-          size: Size(0.22, 0.48),
+          start: Point(1, 3),
+          end: Point(1, 2),
+          size: Size(1, 1),
           duration: Duration(seconds: 2),
           child: Image.network(
             'https://images.unsplash.com/photo-1577069861033-55d04cec4ef5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTJ8fGZydWl0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
@@ -77,9 +77,9 @@ final widgetBuilder = (id) => DynamicImageGrid(
         ),
         DynamicItem(
           // bananas
-          start: Point(0.26, 1.25),
-          end: Point(0.26, 0.52),
-          size: Size(0.22, 0.48),
+          start: Point(2, 4),
+          end: Point(2, 2),
+          size: Size(1, 1),
           duration: Duration(seconds: 3),
           child: Image.network(
             'https://images.unsplash.com/photo-1543218024-57a70143c369?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8YmFuYW5hc3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
