@@ -6,13 +6,13 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 class DynamicImageGrid extends StatefulWidget {
   final List<DynamicItem> children;
-  final rows;
-  final columns;
+  final rowCount;
+  final columnCount;
   DynamicImageGrid({
     required Key key,
     required this.children,
-    this.rows = 2,
-    this.columns = 4,
+    this.rowCount = 2,
+    this.columnCount = 4,
   }) : super(key: key);
 
   @override
@@ -26,9 +26,21 @@ class _DynamicImageGridState extends State<DynamicImageGrid> with TickerProvider
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
+      /// determine the current aspect ratio/orientation
+      final orientation = constraints.maxWidth > constraints.maxHeight ? Orientation.landscape : Orientation.portrait;
+
+      /// Swap row count and column count when portrait mode is detected.
+      final rows = orientation == Orientation.landscape && widget.rowCount < widget.columnCount
+          ? widget.rowCount
+          : widget.columnCount;
+      final columns = orientation == Orientation.landscape && widget.rowCount < widget.columnCount
+          ? widget.columnCount
+          : widget.rowCount;
+
+      /// calculate the gap and row/column sizes based on available size
       final gap = (constraints.maxWidth + constraints.maxHeight) * 0.01;
-      final rowSize = (constraints.maxHeight - (widget.rows - 1) * gap) / widget.rows;
-      final colSize = (constraints.maxWidth - (widget.columns - 1) * gap) / widget.columns;
+      final rowSize = (constraints.maxHeight - (rows - 1) * gap) / rows;
+      final colSize = (constraints.maxWidth - (columns - 1) * gap) / columns;
 
       return Container(
         padding: EdgeInsets.all(10),
@@ -37,18 +49,26 @@ class _DynamicImageGridState extends State<DynamicImageGrid> with TickerProvider
           onVisibilityChanged: _handleVisibilityChange,
           child: Stack(
             children: widget.children.map((child) {
-              final x = _makeVisible ? child.end.x : child.start.x;
-              final y = _makeVisible ? child.end.y : child.start.y;
-              final h = child.size.height;
-              final w = child.size.width;
+              final layout = child.layout(orientation);
 
+              /// calculate the widget grid position
+              final x = _makeVisible ? layout.end.x : layout.start.x;
+              final y = _makeVisible ? layout.end.y : layout.start.y;
+
+              /// calculate the size of the widget in grid squares
+              final h = layout.size.height;
+              final w = layout.size.width;
+
+              /// calculate pixel location and size of widget
               final left = (x - 1) * colSize + (x - 1) * gap;
               final top = (y - 1) * rowSize + (y - 1) * gap;
               final width = w * colSize + (w - 1) * gap;
               final height = h * rowSize + (h - 1) * gap;
 
-              final moveDuration = child.duration.inMilliseconds;
-              final opacityDuration = child.duration.inMilliseconds ~/ 2;
+              /// calculate how fast transition attributes of widget
+              final moveDuration = layout.duration.inMilliseconds;
+              final opacityDuration = moveDuration ~/ 2;
+              final sizeDuration = moveDuration;
 
               return AnimatedPositioned(
                 left: left,
@@ -58,7 +78,7 @@ class _DynamicImageGridState extends State<DynamicImageGrid> with TickerProvider
                   opacity: _makeVisible ? 1 : 0,
                   duration: Duration(milliseconds: opacityDuration),
                   child: AnimatedSize(
-                    duration: Duration(seconds: 3),
+                    duration: Duration(milliseconds: sizeDuration),
                     vsync: this,
                     child: SizedBox(
                       width: width,
