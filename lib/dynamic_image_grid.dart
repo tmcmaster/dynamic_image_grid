@@ -21,6 +21,8 @@ class DynamicImageGrid extends StatefulWidget {
 
 /// TODO: AnimatedSize needs some further work.
 class _DynamicImageGridState extends State<DynamicImageGrid> with TickerProviderStateMixin {
+  static const MARGIN = 10.0;
+
   bool _makeVisible = false;
 
   @override
@@ -39,11 +41,11 @@ class _DynamicImageGridState extends State<DynamicImageGrid> with TickerProvider
 
       /// calculate the gap and row/column sizes based on available size
       final gap = (constraints.maxWidth + constraints.maxHeight) * 0.01;
-      final rowSize = (constraints.maxHeight - (rows - 1) * gap) / rows;
-      final colSize = (constraints.maxWidth - (columns - 1) * gap) / columns;
+      final rowSize = (constraints.maxHeight - (rows - 1) * gap - MARGIN * 2) / rows;
+      final colSize = (constraints.maxWidth - (columns - 1) * gap - MARGIN * 2) / columns;
 
       return Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(MARGIN),
         child: VisibilityDetector(
           key: widget.key!,
           onVisibilityChanged: _handleVisibilityChange,

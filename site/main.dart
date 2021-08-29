@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dynamic_image_grid/dynamic_image_grid.dart';
 import 'package:dynamic_image_grid/dynamic_item.dart';
 import 'package:dynamic_image_grid/dynamic_layout.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_workbench/flutter_workbench.dart';
 
@@ -13,7 +14,7 @@ void main() => FlutterWorkbench.runAppWidgetTester(
       styles: SharedStyle.themes,
       options: WidgetTesterOptions(
         aspectRatio: 5 / 3,
-        columns: 1,
+        columns: kIsWeb ? 2 : 1,
       ),
       children: Iterable.generate(5).map((i) => widgetBuilder(i)).toList(),
     );
