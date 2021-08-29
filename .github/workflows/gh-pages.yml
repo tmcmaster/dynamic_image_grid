@@ -31,7 +31,7 @@ jobs:
 
       - run: flutter pub get
       - run: flutter build web -t site/main.dart
-      - run: sed -i 's/base href="\/"/base href="\/flutter_package_template\/"/g' build/web/index.html
+      - run: sed -i 's/base href="\/"/base href="\/dynamic_image_grid\/"/g' build/web/index.html
 
       - name: deploy to pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
