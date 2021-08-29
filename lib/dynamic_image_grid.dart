@@ -67,20 +67,15 @@ class _DynamicImageGridState extends State<DynamicImageGrid> with TickerProvider
               final width = w * colSize + (w - 1) * gap;
               final height = h * rowSize + (h - 1) * gap;
 
-              /// calculate how fast transition attributes of widget
-              final moveDuration = layout.duration.inMilliseconds;
-              final opacityDuration = moveDuration ~/ 2;
-              final sizeDuration = moveDuration;
-
               return AnimatedPositioned(
                 left: left,
                 top: top,
-                duration: Duration(milliseconds: moveDuration),
+                duration: Duration(milliseconds: layout.duration.inMilliseconds),
                 child: AnimatedOpacity(
                   opacity: _makeVisible ? 1 : 0,
-                  duration: Duration(milliseconds: opacityDuration),
+                  duration: Duration(milliseconds: layout.duration.inMilliseconds),
                   child: AnimatedSize(
-                    duration: Duration(milliseconds: sizeDuration),
+                    duration: Duration(milliseconds: layout.duration.inMilliseconds),
                     vsync: this,
                     child: SizedBox(
                       width: width,
